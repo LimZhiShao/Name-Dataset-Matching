@@ -1,7 +1,13 @@
 import pandas as pd
 
-memberlist=pd.read_excel(r'C:\Users\user\Desktop\Combined member list.xlsx',header=None,usecols=[0,1,2])  
-attendancelist=pd.read_excel(r'C:\Users\user\Desktop\Combined attendance list of events.xlsx',header=None,usecols=[0,1])
+memberlist=pd.read_excel(r'C:\Users\user\Desktop\Combined member list.xlsx',header=None,usecols=[0,2])  #in original dataset, column 0 is member's name, column 2 is the year of the member's registration
+attendancelist=pd.read_excel(r'C:\Users\user\Desktop\Combined attendance list of events.xlsx',header=None,usecols=[0]) #in original dataset, column 0 is the member's name
+
+#In this case,memberlist is the membership database,attendancelist is a combined attendance list of all events held in the year
+#The final output returns the number of events attended by each member in the year (separated into 2 files: activememberlist.xlsx and nonactivememberlist.xlsx)
+#The final output also returns the names in attendancelist who are not recorded in the membership database (nonmemberlist.xlsx)
+
+
 #match all names in attendancelist (data to looked for) with the names in memberlist (the database)
 #the data in member_matchingcolumn and attendance_matchingcolumn used here should be all in UPPERCASE/lowercase
 
@@ -45,6 +51,7 @@ else:
 
 ##############################################################################
 #The following part is modified from sparse_dot_topn to match inconsistent names
+#This part could be skipped and directly go to the exportation session if all the names are consistent/the data used for matching is numbers (this part only works for strings)
 
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -60,9 +67,6 @@ root.config(bg='white')
 root.title('Name Matching')
 frame=Frame(root)
 frame.pack(fill='both',expand=True)
-
-
-
 
 
 pd.set_option('display.expand_frame_repr', False)
@@ -148,8 +152,6 @@ matches_df=get_matches_df(matches,processingdata,memberlist_sliced)
 matches_df=matches_df.sort_values(['Index of data to look for','Similarity'],ascending=[True,False])
 
 
-
-
 datalookedfor=np.unique(matches_df['Index of data to look for'].to_numpy())
 #datalookedfor is a unique list of index of all names to look for
 
@@ -157,11 +159,8 @@ datalookedfor_value_track=pd.concat([matches_df.index.to_frame(),matches_df.iloc
 #datalookedfor_value_track column 0 is the index of original list (the index which rowclicked returns), column 1 is the value of unique list, this is to find the index of that cell in the unique list, column 2 is the index of possible matches
 
 
-
 showmatches=matches_df
 showmatches.columns=['No.','Look for','Index of matches','Potential matches','Similarity']
-
-
 
 
 clickcount=np.zeros(len(showmatches))
@@ -211,11 +210,8 @@ def handle_left_click(event):
     pt.redraw()
 
 
-    
 pt.bind('<Button-1>',handle_left_click)
 pt.rowheader.bind('<Button-1>',handle_left_click)
-
-
 
 
 def exportdata():
@@ -240,6 +236,23 @@ root.mainloop()
 
 #############################################################################
 #The following part is exportation of output files
+
+nonmemberlist.columns=['Name']
+memberlist.columns=['Name','Year','No. of Events Attended in the Year']
+
+nonactivememberlist=memberlist.loc[memberlist['No. of Events Attended in the Year'] == 0]
+activememberlist=memberlist.loc[memberlist['No. of Events Attended in the Year'] != 0]
+
+
+print(nonactivememberlist)
+print('\n')
+print(activememberlist)
+print('\n')
+print(nonmemberlist)
+
+nonmemberlist.to_excel(r'C:\Users\user\Desktop\List of non-members.xlsx',index=False)
+nonactivememberlist.to_excel(r'C:\Users\user\Desktop\List of non-active members.xlsx',index=False)
+activememberlist.to_excel(r'C:\Users\user\Desktop\List of active members.xlsx',index=False)
 
 
 
