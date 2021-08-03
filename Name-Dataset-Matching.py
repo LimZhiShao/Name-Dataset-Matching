@@ -147,6 +147,8 @@ processingdata=pd.concat([memberlist_sliced,attendancelist_unidentified],axis=0,
 vectorizer=TfidfVectorizer(min_df=1,analyzer=ngrams)
 processingdata_idf_matrix=vectorizer.fit_transform(processingdata)
 matches=awesome_cossim_top(processingdata_idf_matrix,processingdata_idf_matrix.transpose(),10,0.4)
+#matches will similarity below 0.4 will be filtered out directly
+#similarity of 1==exact match, similarity of 0==not matching at all
 
 matches_df=get_matches_df(matches,processingdata,memberlist_sliced)
 matches_df=matches_df.sort_values(['Index of data to look for','Similarity'],ascending=[True,False])
@@ -232,6 +234,7 @@ confirm.place(x=1150,y=600,anchor='se')
 
 
 root.mainloop()
+#select only names that you think match the potential matches, unselected names will be treated as non-members directly
 
 
 #############################################################################
