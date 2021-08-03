@@ -1,4 +1,4 @@
-# Name-Dataset-Matching
+# Name-Matching
 Hi, I am new to python, so the codes may not be that clean and nicelooking.
 
 This is a program that matches names in a namelist with names in the target dataset and return the number of the name's occurence. 
