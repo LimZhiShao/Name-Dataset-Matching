@@ -1,18 +1,10 @@
-/*
- *Modifications Copyright 2017, ING Wholesale Banking Advanced Analytics Team
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
+#Copyright (c) 2021 LimZhiShao
+#This code is licensed under MIT License (see LICENSE for details)
+
+#The following library has been used and adopted in this code
+#Copyright 2017, ING Wholesale Banking Advanced Analytics Team
+#Licensed under the Apache License, Version 2.0 (the "License") (see NOTICE for details)
 
 
 
@@ -94,7 +86,7 @@ def ngrams(string,n=3):
     ngrams=zip(*[string[i:] for i in range (n)])
     return [''.join(ngram) for ngram in ngrams]
 
-#awesome_cossim_top is modified from awesome_cossim_topn of its original library
+#awesome_cossim_top is adopted from awesome_cossim_topn of its original library sparse_dot_topn
 def awesome_cossim_top(A,B,ntop,lower_bound=0):
     A=A.tocsr()   
     B=B.tocsr()
@@ -124,7 +116,8 @@ def awesome_cossim_top(A,B,ntop,lower_bound=0):
     )
     return csr_matrix((data,indices,indptr),shape=(M,N))
 
-def get_matches_df(sparse_matrix,name_vector,originaldatalist):   #originaldatalist=memberlist_sliced, name_vector=processingdata
+def get_matches_df(sparse_matrix,name_vector,originaldatalist):   
+    #originaldatalist=memberlist_sliced, name_vector=processingdata
     non_zeros=sparse_matrix.nonzero()
     sparserows=non_zeros[0]
     sparsecols=non_zeros[1]
