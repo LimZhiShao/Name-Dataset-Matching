@@ -1,8 +1,8 @@
 
-#Copyright (c) 2021 LimZhiShao
+#Copyright (c) 2021 Lim Zhi Shao
 #This code is licensed under MIT License (see LICENSE for details)
 
-#The following library has been used and adopted in this code
+#The work of following author has been used and adopted in this code
 #Copyright 2017, ING Wholesale Banking Advanced Analytics Team
 #Licensed under the Apache License, Version 2.0 (the "License") (see NOTICE for details)
 
